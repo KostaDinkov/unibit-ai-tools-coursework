@@ -20,15 +20,12 @@ interface Metric{
     description: string;    // описание на показателя - това поле беше препоръчано от Github Copilot
     unit: string;           // мерна единица за показателя
     preferredValue: number | null;  // предпочитана стойност, ако има такава.
-}
-
-// Интерфейс, специфичен за показателите свързани с кръвните изследвания
-interface BloodMetric extends Metric{
     referenceRange:{    // референтни стойности, ако има такива.
         min:number;
         max:number | null;
     } | null;
 }
+
 
 // Интерфейс за конкретно измерване на показател
 interface DataPoint {
