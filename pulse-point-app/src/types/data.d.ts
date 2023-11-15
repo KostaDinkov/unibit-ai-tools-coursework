@@ -13,6 +13,6 @@ interface Metric{
 interface DataPoint {
     metricId:string;
     value: number;
-    date: string;
-    comment: string
+    timestamp: number;
+    comment: string | null;
 }
