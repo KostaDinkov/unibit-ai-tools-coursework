@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./routes/Home.tsx";
 import MetricView from "./routes/MetricView.tsx";
 import ApiProvider from "./context/ApiProvider.tsx";
-import AddMetric from "./routes/AddMetric.tsx";
+import MetricFormPage from "./routes/MetricFormPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -14,8 +14,9 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path:"/",element: <Home /> },
-      { path: "/view/:id", element: <MetricView /> },
-      { path: "/metrics/add", element: <AddMetric/>}
+      { path: "/metrics/view/:id", element: <MetricView /> },
+      { path: "/metrics/add", element: <MetricFormPage/>},
+      { path: "/metrics/edit", element: <MetricFormPage/>}
     ],
   },
 ]);
