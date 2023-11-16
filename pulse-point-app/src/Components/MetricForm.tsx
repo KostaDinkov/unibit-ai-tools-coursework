@@ -1,57 +1,124 @@
 import { useState } from "react";
-import TextField from "@mui/material/TextField";
-import { useApi } from "../context/ApiProvider";
 import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 
-export default function MetricForm({ metric, isEdit }: { metric: Metric | null, isEdit: boolean }) {
-  const api = useApi();
+const defaultFormState: Metric = {
+  name: "",
+  description: "",
+  unit: "",
+  preferredValue: undefined,
+  id: crypto.randomUUID(),
+  referenceRange: {
+    min: undefined,
+    max: undefined,
+  },
+};
+export default function MetricForm({
+  metric,
+  isEdit,
+  handleSubmit,
+}: {
+  metric: Metric | null;
+  handleSubmit: (metric: Metric) => void;
+  isEdit: boolean;
+}) {
   const navigate = useNavigate();
-  const [name, setName] = useState(metric?.name || "");
-  const [description, setDescription] = useState(metric?.description || "");
-  const [unit, setUnit] = useState(metric?.unit || "");
 
-  function handleSubmit() {
-    if(isEdit) {
-        api.updateMetric({ name, description, unit, id: metric!.id });}
-    else{
-        api.addMetric({ name, description, unit, id: crypto.randomUUID() });
-    }
-    
-    navigate("/");
-  }
+  const [formState, setFormState] = useState(metric || defaultFormState);
+
+  const onChange = (e: React.ChangeEvent) => {
+    const { name, value } = e.target as HTMLInputElement;
+    setFormState({ ...formState, [name]: value });
+  };
+
+  const onChangeRef = (e: React.ChangeEvent) => {
+    const { name, value } = e.target as HTMLInputElement;
+    setFormState({
+      ...formState,
+      referenceRange: {
+        ...formState.referenceRange,
+        [name]: value ? parseFloat(value) : null,
+      },
+    });
+  };
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        handleSubmit();
+        handleSubmit(formState as Metric);
       }}
     >
-      <Stack direction="column" spacing={2}>
-        <TextField
-          disabled={isEdit}
-          id="name"
-          label="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+      <Stack direction="column" spacing={2} alignItems={'flex-start'}>
+        <label>
+          Name{" "}
+          <input
+            disabled={isEdit}
+            name="name"
+            type="text"
+            value={formState.name}
+            onChange={onChange}
+            required
+          />
+        </label>
 
-        <TextField
-          id="description"
-          label="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+        <label>
+          Description{" "}
+          <input
+            id="description"
+            name="description"
+            type="text"
+            value={formState.description}
+            onChange={onChange}
+          />
+        </label>
 
-        <TextField
-          id="unit"
-          label="Unit"
-          value={unit}
-          onChange={(e) => setUnit(e.target.value)}
-          required
-        />
+        <label>
+          Unit{" "}
+          <input
+            name="unit"
+            type="text"
+            value={formState.unit}
+            onChange={onChange}
+            required
+          />
+        </label>
+
+        <label>
+          Preferred Value{" "}
+          <input
+            type="number"
+            value={formState.preferredValue}
+            onChange={onChange}
+            name="preferredValue"
+          />
+        </label>
+
+        <fieldset>
+          <Stack direction="column" spacing={2}>
+            <legend>Reference range</legend>
+            <label>
+              <span>Minimum Value </span>
+              <input
+                name="min"
+                value={formState.referenceRange?.min}
+                onChange={onChangeRef}
+                type="number"
+              />
+            </label>
+
+            <label>
+              <span>Maximum Value </span>
+              <input
+                name="max"
+                value={formState.referenceRange?.max}
+                onChange={onChangeRef}
+                type="number"
+              />
+            </label>
+          </Stack>
+        </fieldset>
+
         <Button type="submit">{isEdit ? "Edit Metric" : "Add Metric"}</Button>
         <Button
           onClick={(e) => {

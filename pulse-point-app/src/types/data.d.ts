@@ -5,14 +5,14 @@ interface Metric{
     unit: string;
     preferredValue?: number;
     referenceRange?:{
-        min:number | null;
-        max:number | null;
+        min?:number ;
+        max?:number ;
     } ;
 }
 
 interface DataPoint {
     metricId:string;
-    value: number;
+    value: number | null;
     timestamp: number;
-    comment?: string;
+    comment: string | null;
 }

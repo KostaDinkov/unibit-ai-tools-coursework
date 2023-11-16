@@ -15,8 +15,7 @@ export default function MetricCard({
   function handleCardClick(): void {
     navigate(`/metrics/view/${metric.id}`, {
       state: {
-        metricName: metric.name,
-        metricId: metric.id,
+        metric
       },
     });
   }

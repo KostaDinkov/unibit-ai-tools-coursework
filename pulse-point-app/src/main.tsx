@@ -7,6 +7,7 @@ import Home from "./routes/Home.tsx";
 import MetricView from "./routes/MetricView.tsx";
 import ApiProvider from "./context/ApiProvider.tsx";
 import MetricFormPage from "./routes/MetricFormPage.tsx";
+import DataPointFormPage from "./routes/DataPointFormPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,8 @@ const router = createBrowserRouter([
       { path:"/",element: <Home /> },
       { path: "/metrics/view/:id", element: <MetricView /> },
       { path: "/metrics/add", element: <MetricFormPage/>},
-      { path: "/metrics/edit", element: <MetricFormPage/>}
+      { path: "/metrics/edit", element: <MetricFormPage/>},
+      { path: "/data-points/add", element: <DataPointFormPage />}
     ],
   },
 ]);
