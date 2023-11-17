@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useApi } from "../context/ApiProvider";
 import MetricForm from "../Components/MetricForm";
 import {useNavigate} from 'react-router-dom';
+import Navigation from "../Components/Navigation";
 
 // adds a new metric to the database
 export default function MetricFormPage() {
@@ -22,15 +23,15 @@ export default function MetricFormPage() {
   if (isEdit) {
     return (
       <>
-        <h2>Edit Metric</h2>
-        <MetricForm isEdit metric={state.metric} handleSubmit={handleSubmit}/>
+        <Navigation pageTitle={`Edit Metric`}/>
+        <MetricForm isEdit={true} metric={state.metric} handleSubmit={handleSubmit}/>
       </>
     );
   } else {
     return (
       <>
-        <h2>Add Metric</h2>
-        <MetricForm isEdit metric={null} handleSubmit={handleSubmit}/>
+        <Navigation pageTitle={`Add New Metric`}/>
+        <MetricForm isEdit={false} metric={null} handleSubmit={handleSubmit}/>
       </>
     );
   }

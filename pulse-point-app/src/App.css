@@ -5,3 +5,8 @@
   text-align: center;
 }
 
+ul li, menu li {
+  list-style: none;
+  list-style-type: none;
+}
+

@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 export default function DataPointForm({
   metric,
   handleSubmit,
+  handleCancel,
 }: {
   metric: Metric;
   handleSubmit: (dataPoint: DataPoint) => void;
+  handleCancel: (e: React.FormEvent) => void;
   isEdit: boolean;
 }) {
   const defaultFormState: DataPoint = {
@@ -25,7 +28,7 @@ export default function DataPointForm({
   };
 
   return (
-    <div>
+    <article>
       <h2>{metric.name}</h2>
       <form
         onSubmit={(e) => {
@@ -34,30 +37,34 @@ export default function DataPointForm({
         }}
       >
         <Stack direction={"column"} spacing={2}>
-          <label>
-            <span>Value </span>
-            <input
+        
+            <TextField
               type="number"
+              label="Value"
               value={formState.value || 0}
               name="value"
               required
               onChange={handleChange}
             />
-          </label>
 
-          <label>
-            <span>Comment </span>
-            <textarea
+            <TextField
+
               name="comment"
+              label="Comment"
+              multiline
               value={formState.comment || ""}
               onChange={handleChange}
             />
-          </label>
-        </Stack>
-        <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit">
           Add
         </Button>
+        <Button onClick={handleCancel}>
+          Cancel
+        </Button>
+
+        </Stack>
+        
       </form>
-    </div>
+    </article>
   );
 }

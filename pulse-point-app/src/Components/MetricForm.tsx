@@ -2,6 +2,8 @@ import { useState } from "react";
 import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 const defaultFormState: Metric = {
   name: "",
@@ -42,6 +44,7 @@ export default function MetricForm({
       },
     });
   };
+
   return (
     <form
       onSubmit={(e) => {
@@ -49,77 +52,64 @@ export default function MetricForm({
         handleSubmit(formState as Metric);
       }}
     >
-      <Stack direction="column" spacing={2} alignItems={'flex-start'}>
-        <label>
-          Name{" "}
-          <input
-            disabled={isEdit}
-            name="name"
-            type="text"
-            value={formState.name}
-            onChange={onChange}
-            required
-          />
-        </label>
+      <Stack direction="column" spacing={2}>
+        <TextField
+          label="Name"
+          disabled={isEdit}
+          name="name"
+          value={formState.name}
+          onChange={onChange}
+          required
+        />
 
-        <label>
-          Description{" "}
-          <input
-            id="description"
-            name="description"
-            type="text"
-            value={formState.description}
-            onChange={onChange}
-          />
-        </label>
+        <TextField
+          label="Description"
+          name="description"
+          value={formState.description}
+          onChange={onChange}
+        />
 
-        <label>
-          Unit{" "}
-          <input
-            name="unit"
-            type="text"
-            value={formState.unit}
-            onChange={onChange}
-            required
-          />
-        </label>
+        <TextField
+          name="unit"
+          label="Unit"
+        
+          value={formState.unit}
+          onChange={onChange}
+          required
+        />
 
-        <label>
-          Preferred Value{" "}
-          <input
-            type="number"
-            value={formState.preferredValue}
-            onChange={onChange}
-            name="preferredValue"
-          />
-        </label>
+        <TextField
+          type="number"
+          label="Preferred Value"
+          value={formState.preferredValue || ""}
+          onChange={onChange}
+          name="preferredValue"
+        />
 
-        <fieldset>
-          <Stack direction="column" spacing={2}>
-            <legend>Reference range</legend>
-            <label>
-              <span>Minimum Value </span>
-              <input
-                name="min"
-                value={formState.referenceRange?.min}
-                onChange={onChangeRef}
-                type="number"
-              />
-            </label>
-
-            <label>
-              <span>Maximum Value </span>
-              <input
-                name="max"
-                value={formState.referenceRange?.max}
-                onChange={onChangeRef}
-                type="number"
-              />
-            </label>
+        <Box
+          component="fieldset"
+          sx={{ borderRadius: "5px", border: "1px solid grey" }}
+        >
+          <legend>Reference Range</legend>
+          <Stack spacing={2}>
+            <TextField
+              name="min"
+              label="Minimum Value"
+              value={formState.referenceRange?.min || ""}
+              onChange={onChangeRef}
+              type="number"
+            />
+            <TextField
+              name="max"
+              label="Maximum Value"
+              value={formState.referenceRange?.max || ""}
+              onChange={onChangeRef}
+              type="number"
+            />
           </Stack>
-        </fieldset>
+        </Box>
 
-        <Button type="submit">{isEdit ? "Edit Metric" : "Add Metric"}</Button>
+        <Button variant ='contained' type="submit">{isEdit ? "Edit Metric" : "Add Metric"}</Button>
         <Button
           onClick={(e) => {
             e.preventDefault();

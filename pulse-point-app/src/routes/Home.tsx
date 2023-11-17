@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import MetricCard from "../Components/MetricCard.tsx";
+import Navigation from "../Components/Navigation.tsx";
 
 export default function Home() {
   const api = useApi();
@@ -20,8 +21,7 @@ export default function Home() {
 
   return (
     <>
-      <h2>My metrics</h2>
-
+    <Navigation pageTitle="My Metrics"/>
       <Stack direction="column" spacing={2}>
         <Button
           variant="contained"

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import {
   LineChart,
   Line,
-  CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
@@ -15,6 +14,7 @@ import {
   Legend,
   Label,
 } from "recharts";
+import Navigation from "../Components/Navigation";
 
 export default function MetricView() {
   const api = useApi();
@@ -22,14 +22,14 @@ export default function MetricView() {
   const { metric } = useLocation().state as {
     metric: Metric;
   };
-  const [dataPoints, setDataPoints] = useState([] as DataPoint[]);
+  
   const [chartData, setChartData] = useState(
     [] as { date: string; y: number | null }[]
   );
 
   useEffect(() => {
     const dataPoints = api.getDataPointsForMetric(metric.id);
-    setDataPoints(dataPoints);
+    
 
     const data = dataPoints
       .sort((a, b) => a.timestamp - b.timestamp)
@@ -46,7 +46,7 @@ export default function MetricView() {
 
   return (
     <div>
-      <h2>{metric.name}</h2>
+      <Navigation  pageTitle={`${metric.name}`}/>
       <LineChart width={600} height={300} data={chartData}>
         <ReferenceLine
           label="Max"
