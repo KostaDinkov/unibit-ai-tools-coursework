@@ -1,6 +1,6 @@
+
 import { useState } from "react";
 import Stack from "@mui/material/Stack";
-import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -20,17 +20,23 @@ export default function MetricForm({
   metric,
   isEdit,
   handleSubmit,
+  handleCancel
 }: {
   metric: Metric | null;
   handleSubmit: (metric: Metric) => void;
+  handleCancel: (e: React.FormEvent) => void;
   isEdit: boolean;
 }) {
-  const navigate = useNavigate();
+
 
   const [formState, setFormState] = useState(metric || defaultFormState);
 
   const onChange = (e: React.ChangeEvent) => {
     const { name, value } = e.target as HTMLInputElement;
+    if((e.target as HTMLInputElement).type === 'number') {
+      setFormState({...formState, [name]: (value ? parseFloat(value) : null)})
+      return;
+    }
     setFormState({ ...formState, [name]: value });
   };
 
@@ -72,7 +78,6 @@ export default function MetricForm({
         <TextField
           name="unit"
           label="Unit"
-        
           value={formState.unit}
           onChange={onChange}
           required
@@ -111,10 +116,7 @@ export default function MetricForm({
 
         <Button variant ='contained' type="submit">{isEdit ? "Edit Metric" : "Add Metric"}</Button>
         <Button
-          onClick={(e) => {
-            e.preventDefault();
-            navigate(-1);
-          }}
+          onClick={handleCancel}
         >
           Cancel
         </Button>

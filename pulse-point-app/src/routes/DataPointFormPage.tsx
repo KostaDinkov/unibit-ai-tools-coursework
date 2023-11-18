@@ -9,7 +9,6 @@ export default function DataPointFormPage() {
     const api = useApi();
     const navigate = useNavigate();
     const {metric} = useLocation().state as {metric: Metric};
-    
     const handleSubmit = (dataPoint: DataPoint) => {
         api.addDataPoint(dataPoint);
         navigate(`/metrics/view/${metric.id}`, {state: {metric}});
