@@ -24,6 +24,13 @@ export default function DataPointForm({
   const handleChange = (e: React.ChangeEvent) => {
     const { name, value } = e.target as HTMLInputElement;
     const removeLeadingZero = value.replace(/^0+/, "");
+    if (
+      (e.target as HTMLInputElement).type === "number" 
+    ) {
+      setFormState({ ...formState, [name]: parseFloat(removeLeadingZero) });
+      return;
+    }
+
     setFormState({ ...formState, [name]: removeLeadingZero });
   };
 
@@ -37,33 +44,27 @@ export default function DataPointForm({
         }}
       >
         <Stack direction={"column"} spacing={2}>
-        
-            <TextField
-              type="number"
-              label="Value"
-              value={formState.value || 0}
-              name="value"
-              required
-              onChange={handleChange}
-            />
+          <TextField
+            type="number"
+            label="Value"
+            value={formState.value || 0}
+            name="value"
+            required
+            onChange={handleChange}
+          />
 
-            <TextField
-
-              name="comment"
-              label="Comment"
-              multiline
-              value={formState.comment || ""}
-              onChange={handleChange}
-            />
-            <Button variant="contained" type="submit">
-          Add
-        </Button>
-        <Button onClick={handleCancel}>
-          Cancel
-        </Button>
-
+          <TextField
+            name="comment"
+            label="Comment"
+            multiline
+            value={formState.comment || ""}
+            onChange={handleChange}
+          />
+          <Button variant="contained" type="submit">
+            Add
+          </Button>
+          <Button onClick={handleCancel}>Cancel</Button>
         </Stack>
-        
       </form>
     </article>
   );
