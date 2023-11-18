@@ -44,7 +44,7 @@ export default function DataPointForm({
           <TextField
             type="number"
             label="Value"
-            value={formState.value}
+            value={formState.value || ""}
             name="value"
             required
             onChange={handleChange}
