@@ -22,14 +22,13 @@ export default function MetricView() {
   const { metric } = useLocation().state as {
     metric: Metric;
   };
-  
+
   const [chartData, setChartData] = useState(
     [] as { date: string; y: number | null }[]
   );
 
   useEffect(() => {
     const dataPoints = api.getDataPointsForMetric(metric.id);
-    
 
     const data = dataPoints
       .sort((a, b) => a.timestamp - b.timestamp)
@@ -46,20 +45,21 @@ export default function MetricView() {
 
   return (
     <div>
-      <Navigation  pageTitle={`${metric.name}`}/>
+      <Navigation pageTitle={`${metric.name}`} />
       <LineChart width={600} height={300} data={chartData}>
-        <ReferenceLine
+        {metric.referenceRange?.max && <ReferenceLine
           label="Max"
-          y={metric.referenceRange?.max}
+          y={metric.referenceRange.max}
           stroke="red"
           strokeDasharray={"3 3"}
-        />
-        <Line
-          name={metric.name}
-          type="monotone"
-          dataKey="y"
-          stroke="#1565c0"
-        />
+        />}
+        {metric.referenceRange?.min && <ReferenceLine
+          label="Min"
+          y={metric.referenceRange.min}
+          stroke="yellow"
+          strokeDasharray={"3 3"}
+        />}
+        <Line name={metric.name} type="monotone" dataKey="y" stroke="#1565c0" />
 
         <XAxis dataKey="date">
           <Label value={"date"} position="insideBottom" offset={-10} />

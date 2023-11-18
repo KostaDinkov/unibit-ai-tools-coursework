@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { defaultFormState } from "../utils/dataPointFormUtils";
 
 export default function DataPointForm({
   metric,
@@ -11,43 +12,39 @@ export default function DataPointForm({
   metric: Metric;
   handleSubmit: (dataPoint: DataPoint) => void;
   handleCancel: (e: React.FormEvent) => void;
-  isEdit: boolean;
+
 }) {
-  const defaultFormState: DataPoint = {
-    metricId: metric.id,
-    value: 0,
-    timestamp: new Date().getTime(),
-    comment: "",
-  };
+
   const [formState, setFormState] = useState(defaultFormState);
 
   const handleChange = (e: React.ChangeEvent) => {
     const { name, value } = e.target as HTMLInputElement;
     const removeLeadingZero = value.replace(/^0+/, "");
-    if (
-      (e.target as HTMLInputElement).type === "number" 
-    ) {
-      setFormState({ ...formState, [name]: parseFloat(removeLeadingZero) });
-      return;
-    }
-
     setFormState({ ...formState, [name]: removeLeadingZero });
   };
+
+  const submitForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    const dataPoint: DataPoint = {
+      metricId: metric.id,
+      value: Number(formState.value),
+      comment: formState.comment || null,
+      timestamp: new Date().getTime(),
+    };
+    handleSubmit(dataPoint);
+  }
 
   return (
     <article>
       <h2>{metric.name}</h2>
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit(formState as DataPoint);
-        }}
+        onSubmit={submitForm}
       >
         <Stack direction={"column"} spacing={2}>
           <TextField
             type="number"
             label="Value"
-            value={formState.value || 0}
+            value={formState.value}
             name="value"
             required
             onChange={handleChange}
@@ -57,7 +54,7 @@ export default function DataPointForm({
             name="comment"
             label="Comment"
             multiline
-            value={formState.comment || ""}
+            value={formState.comment}
             onChange={handleChange}
           />
           <Button variant="contained" type="submit">

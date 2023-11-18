@@ -12,6 +12,7 @@ export default function MetricFormPage() {
   const isEdit = !!state.metric;
 
   const handleSubmit = (metric: Metric) => {
+
     if (isEdit) {
       api.updateMetric(metric);
     } else {
@@ -31,7 +32,6 @@ export default function MetricFormPage() {
       <>
         <Navigation pageTitle={`Edit Metric`} />
         <MetricForm
-          isEdit={true}
           metric={state.metric}
           handleSubmit={handleSubmit}
           handleCancel={handleCancel}
@@ -43,7 +43,6 @@ export default function MetricFormPage() {
       <>
         <Navigation pageTitle={`Add New Metric`} />
         <MetricForm
-          isEdit={false}
           metric={null}
           handleSubmit={handleSubmit}
           handleCancel={handleCancel}

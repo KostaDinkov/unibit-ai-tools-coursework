@@ -4,39 +4,25 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import { getFormStateFromMetric, getMetricFromFormState } from "../utils/metricFormUtils";
 
-const defaultFormState: Metric = {
-  name: "",
-  description: "",
-  unit: "",
-  preferredValue: undefined,
-  id: crypto.randomUUID(),
-  referenceRange: {
-    min: undefined,
-    max: undefined,
-  },
-};
+
 export default function MetricForm({
   metric,
-  isEdit,
   handleSubmit,
   handleCancel
 }: {
   metric: Metric | null;
   handleSubmit: (metric: Metric) => void;
   handleCancel: (e: React.FormEvent) => void;
-  isEdit: boolean;
 }) {
 
-
-  const [formState, setFormState] = useState(metric || defaultFormState);
+  const isEdit = !!metric;
+  const [formState, setFormState] = useState( getFormStateFromMetric(metric));
 
   const onChange = (e: React.ChangeEvent) => {
     const { name, value } = e.target as HTMLInputElement;
-    if((e.target as HTMLInputElement).type === 'number') {
-      setFormState({...formState, [name]: (value ? parseFloat(value) : null)})
-      return;
-    }
+
     setFormState({ ...formState, [name]: value });
   };
 
@@ -46,17 +32,20 @@ export default function MetricForm({
       ...formState,
       referenceRange: {
         ...formState.referenceRange,
-        [name]: value ? parseFloat(value) : null,
+        [name]: value
       },
     });
   };
 
+  const submitForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newMetric = getMetricFromFormState(formState, metric);
+    handleSubmit(newMetric);
+  }
+
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(formState as Metric);
-      }}
+      onSubmit={submitForm}
     >
       <Stack direction="column" spacing={2}>
         <TextField
@@ -124,3 +113,5 @@ export default function MetricForm({
     </form>
   );
 }
+
+
