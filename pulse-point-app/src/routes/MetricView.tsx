@@ -15,6 +15,7 @@ import {
   Label,
 } from "recharts";
 import Navigation from "../Components/Navigation";
+import CustomizedDot from "../Components/CustomizedDot";
 
 export default function MetricView() {
   const api = useApi();
@@ -35,6 +36,7 @@ export default function MetricView() {
       .map((dp) => ({
         date: format(new Date(dp.timestamp), "dd-MM-yyyy"),
         y: dp.value,
+        comment: dp.comment,
       }));
     setChartData(data);
   }, [metric]);
@@ -59,7 +61,7 @@ export default function MetricView() {
           stroke="yellow"
           strokeDasharray={"3 3"}
         />}
-        <Line name={metric.name} type="monotone" dataKey="y" stroke="#1565c0" />
+        <Line name={metric.name} type="monotone" dataKey="y" stroke="#1565c0" dot={<CustomizedDot />}/>
 
         <XAxis dataKey="date">
           <Label value={"date"} position="insideBottom" offset={-10} />
