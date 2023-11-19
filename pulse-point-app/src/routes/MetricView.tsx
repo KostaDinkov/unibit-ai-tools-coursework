@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import Navigation from "../Components/Navigation";
 import CustomizedDot from "../Components/CustomizedDot";
+import CustomizedTooltip from "../Components/CustomizedTooltip";
 
 export default function MetricView() {
   const api = useApi();
@@ -61,8 +62,8 @@ export default function MetricView() {
           stroke="yellow"
           strokeDasharray={"3 3"}
         />}
-        {/* @ts-expect-error recharts passes the props to CustomizedDot internally*/}
-        <Line name={metric.name} type="monotone" dataKey="y" stroke="#1565c0" dot={<CustomizedDot />}/>
+
+        <Line name={metric.name} type="monotone" dataKey="y" stroke="#1565c0" dot={<CustomizedDot/>}/>
 
         <XAxis dataKey="date">
           <Label value={"date"} position="insideBottom" offset={-10} />
@@ -74,7 +75,7 @@ export default function MetricView() {
             position: "insideLeft",
           }}
         />
-        <Tooltip />
+        <Tooltip content={<CustomizedTooltip/>}/>
         <Legend verticalAlign="top" />
       </LineChart>
       <Button variant="contained" onClick={handleAddNewDataPointClick}>
