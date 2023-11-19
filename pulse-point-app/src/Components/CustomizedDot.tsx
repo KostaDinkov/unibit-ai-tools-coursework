@@ -1,4 +1,3 @@
-
 export default function CustomizedDot(props: {
   cx: number;
   cy: number;

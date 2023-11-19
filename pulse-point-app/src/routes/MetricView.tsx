@@ -62,7 +62,7 @@ export default function MetricView() {
           stroke="yellow"
           strokeDasharray={"3 3"}
         />}
-
+        {/*@ts-expect-error recharts supplies props to CustomizedDot internally*/}
         <Line name={metric.name} type="monotone" dataKey="y" stroke="#1565c0" dot={<CustomizedDot/>}/>
 
         <XAxis dataKey="date">
