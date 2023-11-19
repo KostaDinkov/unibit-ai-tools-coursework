@@ -1,6 +1,10 @@
-export default function CustomizedDot(props: any) {
+export default function CustomizedDot(props: {
+  cx: number;
+  cy: number;
+  stroke: string;
+  payload: { comment: string };
+}) {
   const { cx, cy, stroke, payload } = props;
-  console.log(props);
 
   if (payload.comment !== "" && payload.comment !== undefined) {
     return (
